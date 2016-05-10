@@ -1,0 +1,24 @@
+(define (gen-element depth name)
+  (define (name-to-link name)
+    (++ "#" 
+        (string:filter (lambda (x) (or (char:alphanum? x) (char=? x #\-)))
+                       (string:substitute (string:lower-case name) " " "-"))))
+  (++ (string:replicate depth "  ")
+      "* [" name "](" (name-to-link name) ")"))
+
+(define (gen-toc elements)
+  (define toc "##Table Of Contents")
+  (++ toc (reduce (lambda (acc x) (++ acc "\n" (gen-element (x :depth) (x :name)))) "" elements)))
+
+(define (parse-elem elem)
+  (let ((depth (length (string:take-while (curry char=? #\#) elem)))
+        (name (string:trim-front (string:drop-while (curry char=? #\#) elem))))
+    (make-hash :depth depth :name name)))
+
+(define (find-elems f)
+  (let* ((split (string:split (read-contents f) "\n"))
+         (trimmed (map string:trim split))
+         (filtered (filter (lambda (x) (string:starts-with x "#")) trimmed)))
+    (map parse-elem filtered)))
+
+(|> (delay zepto:args) car find-elems gen-toc)
