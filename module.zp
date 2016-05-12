@@ -1,0 +1,16 @@
+#{:name "mdtoc"
+  :version "0.0.1"
+  :license "GPLv2"
+  :entry-point "main.zp"
+  :type :tool
+  :tests []
+  :author #{:name "Veit Heller" 
+            :email "veit@veitheller.de" 
+            :github "@hellerve"}
+  :location #{:github "hellerve/markdown-toc" 
+              :zpr "mdtoc"}
+  :zepto #{:version :any
+           :ez #f
+           :bz #f}
+  :dependencies ()
+  :dev-dependencies ()}

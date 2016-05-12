@@ -21,4 +21,6 @@
          (filtered (filter (lambda (x) (string:starts-with x "#")) trimmed)))
     (map parse-elem filtered)))
 
-(|> (delay zepto:args) car find-elems gen-toc)
+(if (null? zepto:args)
+  (error "Need to specify a Markdown file.\n Usage:\n\tmdtoc <file>")
+  (|> (delay zepto:args) car find-elems gen-toc))
